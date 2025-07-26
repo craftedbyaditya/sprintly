@@ -1,12 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import {
-  X,
-  ChevronsUpDown,
-  Check,
-  CornerDownLeft,
   Sparkles,
   Copy,
-  Maximize2,
   CheckCircle,
   Loader2,
   Pencil,
