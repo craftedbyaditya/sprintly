@@ -12,10 +12,10 @@ export default function Pricing({  }: PricingProps) {
       <div className="w-full overflow-auto">
         {/* Navigation */}
         <nav className="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-200">
-          <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-6xl px-4 sm:px-6 lg:px-8">
             <div className="flex justify-between items-center h-16">
               <div className="flex items-center">
-                <button onClick={() => window.location.href = '/'} className="flex items-center space-x-2">
+                <button onClick={() => window.location.href = import.meta.env.BASE_URL || '/'} className="flex items-center space-x-2">
                   <div className="w-7 h-7 bg-gradient-to-r from-blue-600 to-blue-500 rounded flex items-center justify-center text-white font-bold">
                     S
                   </div>
@@ -32,7 +32,7 @@ export default function Pricing({  }: PricingProps) {
               </div>
 
               <div className="md:hidden">
-                <button onClick={() => window.location.href = '/'} className="text-gray-600 hover:text-gray-900">
+                <button onClick={() => window.location.href = import.meta.env.BASE_URL || '/'} className="text-gray-600 hover:text-gray-900">
                   <Menu className="w-6 h-6" />
                 </button>
               </div>
@@ -168,10 +168,10 @@ export default function Pricing({  }: PricingProps) {
             <div className="mb-8 text-center">
               <h2 className="text-lg font-bold text-gray-900 mb-3">Ready to get started?</h2>
               <div className="flex flex-col sm:flex-row gap-3 justify-center">
-                <button onClick={() => window.location.href = '/'} className="px-4 py-2 bg-white border border-gray-300 rounded text-gray-700 hover:bg-gray-50 transition-colors font-medium text-sm">
+                <button onClick={() => window.location.href = import.meta.env.BASE_URL || '/'} className="px-4 py-2 bg-white border border-gray-300 rounded text-gray-700 hover:bg-gray-50 transition-colors font-medium text-sm">
                   Start with Free
                 </button>
-                <button onClick={() => window.location.href = '/'} className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors font-medium text-sm flex items-center">
+                <button onClick={() => window.location.href = import.meta.env.BASE_URL || '/'} className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors font-medium text-sm flex items-center">
                   <Zap className="w-3 h-3 mr-1" />
                   Go Pro Now
                 </button>

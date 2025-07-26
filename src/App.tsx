@@ -154,9 +154,9 @@ function App() {
                 <a href="#features" className="text-gray-600 hover:text-gray-900 transition-colors">Features</a>
                 <a href="#how-it-works" className="text-gray-600 hover:text-gray-900 transition-colors">How it Works</a>
                 <a href="#testimonials" className="text-gray-600 hover:text-gray-900 transition-colors">Reviews</a>
-                <button
-                  onClick={openPricing}
-                  className="text-gray-600 hover:text-gray-900 transition-colors"
+                <button 
+                  onClick={() => window.location.href = import.meta.env.BASE_URL || '/'}
+                  className="flex items-center focus:outline-none hover:opacity-90 transition-opacity"
                 >
                   Pricing
                 </button>

@@ -28,7 +28,7 @@ export default function SideNav({
         {/* App Logo */}
         <div className="flex items-center mb-6 h-10 pl-1.5">
           <button 
-            onClick={() => window.location.href = '/'} 
+            onClick={() => window.location.href = import.meta.env.BASE_URL || '/'} 
             className="flex items-center focus:outline-none hover:opacity-90 transition-opacity"
           >
             <div className="w-7 h-7 bg-gradient-to-r from-blue-600 to-blue-500 rounded flex items-center justify-center text-white font-bold mr-2">

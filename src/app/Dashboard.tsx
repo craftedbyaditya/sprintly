@@ -84,7 +84,7 @@ export default function Dashboard({ onClose, openStoryBuilder, openFeedback }: D
 
   const handleGenerateNewStory = () => {
     // Navigation logic to go to story generator would be implemented here
-    window.location.href = '/story-generator';
+    window.location.href = `${import.meta.env.BASE_URL || '/'}story-generator`;
   };
 
   const handleCopyStory = (storyId: string) => {
@@ -102,7 +102,7 @@ export default function Dashboard({ onClose, openStoryBuilder, openFeedback }: D
     const storyToRetweak = recentStories.find(story => story.id === storyId);
     if (storyToRetweak) {
       // In a real app, you'd use React Router or similar navigation with state
-      window.location.href = `/story-generator?prompt=${encodeURIComponent(storyToRetweak.prompt)}`;
+      window.location.href = `${import.meta.env.BASE_URL || '/'}story-generator?prompt=${encodeURIComponent(storyToRetweak.prompt)}`;
     }
   };
 
