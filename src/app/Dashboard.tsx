@@ -127,17 +127,11 @@ export default function Dashboard({ onClose, openStoryBuilder, openFeedback }: D
             {/* Welcome Section */}
             <div className="flex justify-between items-center mb-8">
               <div>
-                <h1 className="text-3xl font-bold text-gray-800 mb-1">
+                <h1 className="flex justify-between items-center text-2xl font-bold text-gray-800 mb-2">
                   Welcome back 🙋🏻‍♂️!
                 </h1>
               </div>
-              <button
-                onClick={handleGenerateNewStory}
-                className="flex items-center px-5 py-2.5 bg-gradient-to-r from-blue-600 to-blue-500 text-white font-medium rounded-lg shadow-sm hover:shadow-md hover:from-blue-700 hover:to-blue-600 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
-              >
-                <Plus className="w-4 h-4 mr-2" />
-                <span>Generate New Stories</span>
-              </button>
+             
             </div>
            
             

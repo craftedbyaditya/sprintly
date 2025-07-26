@@ -147,14 +147,15 @@ export default function StoryGenerator({ onClose, openDashboard, openFeedback }:
         
         <div className="px-4 sm:px-5 lg:px-6 py-6">
           <div className="max-w-6xl">
-            <h2 className="flex justify-between items-center text-2xl font-bold text-gray-800 mb-4">
+            <h2 className="flex justify-between items-center text-2xl font-bold text-gray-800 mb-2">
               <div className="flex items-center">
                 Story Generator 📝
               </div>
             </h2>
-            <p className="text-sm text-gray-500 mb-5">
+            <p className="text-sm text-gray-500 mb-8">
               Generate role-specific user stories using AI based on your feature idea.
             </p>
+            
             {(!isInputExpanded && generatedStories.length > 0) && (
               <div onClick={() => setIsInputExpanded(true)} className="flex items-center bg-white shadow-sm rounded-lg border border-gray-200 p-4 cursor-pointer hover:bg-blue-50 hover:border-blue-200 transition-all duration-200 mb-4 animate-fade-in-fast">
                 <div className="flex-grow truncate pr-4">
@@ -170,7 +171,7 @@ export default function StoryGenerator({ onClose, openDashboard, openFeedback }:
               <div className="mb-8">
                 <div className="transition-all duration-300">
                   <div className="mt-0 mb-6">
-                    <label htmlFor="storyPrompt" className="text-lg font-semibold text-gray-800 mb-4 block">
+                    <label htmlFor="storyPrompt" className="block text-sm font-medium text-gray-700 mb-2">
                       Story prompt <span className="text-red-500">*</span>
                     </label>
                     <textarea
@@ -186,7 +187,7 @@ export default function StoryGenerator({ onClose, openDashboard, openFeedback }:
                 
                   <div className="mb-8">
                     <div className="mb-3">
-                      <label className="text-lg font-semibold text-gray-800 mb-4 block">
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
                         Select Stakeholders:
                       </label>
                     </div>
