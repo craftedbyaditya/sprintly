@@ -56,7 +56,7 @@ export default function Feedback({ onClose, openDashboard, openStoryBuilder }: F
               <h1 className="text-2xl font-bold text-gray-800 mb-2">
                 We'd Love Your Feedback ❤️
               </h1>
-              <p className="text-gray-600">
+              <p className="text-sm text-gray-500 mb-5">
                 Your thoughts help us improve Sprintly and build better features for you.
               </p>
             </div>

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { 
   Copy, 
   RefreshCw, 
@@ -21,6 +21,40 @@ interface DashboardProps {
 
 export default function Dashboard({ onClose, openStoryBuilder, openFeedback }: DashboardProps) {
   const [projectContext, setProjectContext] = useState('');
+  const [hasChanges, setHasChanges] = useState(false);
+  const [saveStatus, setSaveStatus] = useState('idle'); // 'idle', 'saving', 'saved'
+  
+  // Check for cached project context on component mount
+  useEffect(() => {
+    const cachedProjectContext = localStorage.getItem('projectContext');
+    if (cachedProjectContext) {
+      setProjectContext(cachedProjectContext);
+    }
+  }, []);
+  
+  // Update project context state when textfield changes
+  const handleProjectContextChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const newValue = e.target.value;
+    setProjectContext(newValue);
+    setHasChanges(true);
+  };
+  
+  // Save project context to cache when save button is clicked
+  const handleSaveProjectContext = () => {
+    setSaveStatus('saving');
+    
+    // Simulate a short delay to show saving state
+    setTimeout(() => {
+      localStorage.setItem('projectContext', projectContext);
+      setHasChanges(false);
+      setSaveStatus('saved');
+      
+      // Reset to idle state after showing saved
+      setTimeout(() => {
+        setSaveStatus('idle');
+      }, 1500);
+    }, 600);
+  };
   
   // Mock data for recent stories
   const recentStories: RecentStory[] = [
@@ -109,19 +143,92 @@ export default function Dashboard({ onClose, openStoryBuilder, openFeedback }: D
             
             {/* Project Context Section */}
             <div className="mb-10">
-              <h2 className="text-lg font-semibold text-gray-800 mb-3">Project Context</h2>
-              <div className="bg-white rounded-xl border border-gray-200 overflow-hidden shadow-sm transition-all hover:shadow-md">
-                <textarea
-                  className="w-full p-4 text-gray-700 resize-none focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
-                  placeholder="What are you working on? (Optional)"
-                  rows={3}
-                  value={projectContext}
-                  onChange={(e) => setProjectContext(e.target.value)}
-                />
+              <div className="flex items-center justify-between mb-3">
+                <h2 className="text-lg font-semibold text-gray-800">Project Context</h2>
+                <span className="text-xs text-blue-500 bg-blue-50 px-2 py-0.5 rounded-full">Helps tailor your stories</span>
               </div>
-              <p className="text-[0.7rem] text-gray-400 mt-2">
-                Context helps tailor your stories better. Totally optional.
-              </p>
+              <div className="bg-white rounded-xl border border-gray-200 overflow-hidden shadow-sm transition-all hover:shadow-md">
+                <div className="p-2 bg-gradient-to-r from-blue-50 to-blue-50/30 border-b border-gray-100">
+                  <div className="flex space-x-1.5">
+                    <div className="w-2.5 h-2.5 rounded-full bg-red-400"></div>
+                    <div className="w-2.5 h-2.5 rounded-full bg-yellow-400"></div>
+                    <div className="w-2.5 h-2.5 rounded-full bg-green-400"></div>
+                  </div>
+                </div>
+                <div className="relative">
+                  <textarea
+                    className={`w-full p-5 text-gray-700 resize-none focus:outline-none focus:ring-0 border-none transition-all text-sm ${hasChanges ? 'bg-amber-50/30' : 'bg-white'}`}
+                    placeholder="Describe what you're working on to help Sprintly generate more relevant user stories..."
+                    rows={4}
+                    value={projectContext}
+                    onChange={handleProjectContextChange}
+                  />
+                  {hasChanges && (
+                    <div className="absolute top-2 right-2 flex items-center justify-center h-5 px-1.5 text-[10px] font-medium text-amber-700 bg-amber-100 rounded-sm border border-amber-200 animate-pulse">
+                      EDITING
+                    </div>
+                  )}
+                </div>
+                <div className="flex justify-between items-center px-4 py-3 bg-gray-50 border-t border-gray-100">
+                  <div className="flex items-center">
+                    {saveStatus === 'idle' && hasChanges && (
+                      <div className="flex items-center">
+                        <span className="inline-block w-2 h-2 bg-amber-400 rounded-full mr-2"></span>
+                        <p className="text-xs text-amber-700 font-medium">Unsaved changes</p>
+                      </div>
+                    )}
+                    {saveStatus === 'idle' && !hasChanges && (
+                      <div className="flex items-center">
+                        <span className="inline-block w-2 h-2 bg-green-400 rounded-full mr-2"></span>
+                        <p className="text-xs text-green-700 font-medium">All changes saved</p>
+                      </div>
+                    )}
+                    {saveStatus === 'saving' && (
+                      <div className="flex items-center">
+                        <div className="animate-spin w-3 h-3 border-2 border-blue-600 border-t-transparent rounded-full mr-2"></div>
+                        <p className="text-xs text-blue-600 font-medium">Saving changes...</p>
+                      </div>
+                    )}
+                    {saveStatus === 'saved' && (
+                      <div className="flex items-center animate-bounce">
+                        <span className="inline-block w-2 h-2 bg-green-500 rounded-full mr-2"></span>
+                        <p className="text-xs text-green-600 font-medium">Successfully saved!</p>
+                      </div>
+                    )}
+                  </div>
+                  <button
+                    onClick={handleSaveProjectContext}
+                    disabled={!hasChanges || saveStatus === 'saving'}
+                    className={`flex items-center px-4 py-1.5 rounded-md text-sm font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 
+                      ${saveStatus === 'saving'
+                        ? 'bg-blue-400 text-white cursor-not-allowed' 
+                        : hasChanges
+                          ? 'bg-blue-600 text-white hover:bg-blue-700'
+                          : 'bg-gray-200 text-gray-400 cursor-not-allowed'}`}
+                  >
+                    {saveStatus === 'saving' ? (
+                      <>
+                        <div className="animate-spin w-4 h-4 border-2 border-white border-t-transparent rounded-full mr-1.5"></div>
+                        Saving...
+                      </>
+                    ) : hasChanges ? (
+                      <>
+                        <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4" />
+                        </svg>
+                        Save Changes
+                      </>
+                    ) : (
+                      <>
+                        <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
+                        </svg>
+                        Saved
+                      </>
+                    )}
+                  </button>
+                </div>
+              </div>
             </div>
 
             {/* Recent Stories Section */}
