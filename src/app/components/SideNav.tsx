@@ -2,10 +2,7 @@ import {
   Home, 
   FileText, 
   MessageSquare, 
-  Settings,
-  X,
-  TestTube,
-  DollarSign
+
 } from 'lucide-react';
 
 interface SideNavProps {
@@ -15,16 +12,14 @@ interface SideNavProps {
   openFeedback?: () => void;
   openTestCases?: () => void;
   openPricing?: () => void;
-  activeScreen: 'dashboard' | 'storyBuilder' | 'feedback' | 'testCases' ;
+  activeScreen: 'dashboard' | 'storyBuilder' | 'feedback' ;
 }
 
 export default function SideNav({ 
-  onClose, 
   openDashboard, 
   openStoryBuilder, 
   openFeedback, 
-  openTestCases,
-  openPricing,
+  
   activeScreen 
 }: SideNavProps) {
   return (
@@ -90,22 +85,9 @@ export default function SideNav({
             }`}>Feedback</span>
           </button>
           
-          {/* Generate Test Cases */}
-          <button 
-            onClick={openTestCases}
-            className={`flex items-center py-2.5 px-3 md:px-4 rounded-lg transition-colors ${
-              activeScreen === 'testCases' 
-                ? 'bg-blue-50 text-blue-600 hover:bg-blue-100' 
-                : 'hover:bg-gray-100 text-gray-600'
-            }`}
-          >
-            <TestTube className={`w-4 h-4 ${activeScreen !== 'testCases' && 'text-gray-500'}`} />
-            <span className={`ml-3 text-sm hidden md:block ${
-              activeScreen !== 'testCases' && 'text-gray-600'
-            }`}>Test Cases</span>
-          </button>
+        
           
-          {/* Pricing */}
+  
         
         </div>
       </div>

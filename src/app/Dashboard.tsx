@@ -2,7 +2,9 @@ import { useState, useEffect } from 'react';
 import { 
   Copy, 
   RefreshCw, 
-  Plus
+  Plus,
+  TestTube,
+  Sparkles
 } from 'lucide-react';
 import SideNav from './components/SideNav';
 
@@ -301,7 +303,7 @@ export default function Dashboard({ onClose, openStoryBuilder, openFeedback }: D
               </div>
             </div>
 
-            {/* No longer needed - moved to welcome section */}
+            
           </div>
         </div>
       </div>
