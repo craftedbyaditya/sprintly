@@ -11,12 +11,12 @@ import {
   Sparkles,
   Target,
   Clock,
-  Play,
   FileText,
   Settings,
   BarChart3,
   ArrowDown
 } from 'lucide-react';
+import StoryGenerator from './app/StoryGenerator';
 
 function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -84,6 +84,7 @@ function App() {
     setShowStoryBuilder(false);
   };
 
+
   return (
     <div className="min-h-screen bg-white">
       {/* Navigation */}
@@ -104,9 +105,13 @@ function App() {
                 <a href="#features" className="text-gray-600 hover:text-gray-900 transition-colors">Features</a>
                 <a href="#how-it-works" className="text-gray-600 hover:text-gray-900 transition-colors">How it Works</a>
                 <a href="#testimonials" className="text-gray-600 hover:text-gray-900 transition-colors">Reviews</a>
-                {/* <button className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">
-                  Get Early Access
-                </button> */}
+                <button 
+                  onClick={openStoryBuilder}
+                  className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors flex items-center gap-2"
+                >
+                  <FileText className="w-4 h-4" />
+                  Story Builder
+                </button>
               </div>
             </div>
 
@@ -122,6 +127,16 @@ function App() {
         {isMenuOpen && (
           <div className="md:hidden bg-white border-t border-gray-200">
             <div className="px-4 pt-2 pb-3 space-y-1">
+              <button 
+                onClick={() => {
+                  toggleMenu(); // Close the menu
+                  openStoryBuilder(); // Open story builder
+                }}
+                className="w-full text-left block px-3 py-2 text-base font-medium text-blue-600 bg-blue-50 rounded-md flex items-center space-x-2"
+              >
+                <FileText className="w-5 h-5" />
+                <span>Story Builder</span>
+              </button>
               <a href="#features" className="block px-3 py-2 text-gray-600 hover:text-gray-900">Features</a>
               <a href="#how-it-works" className="block px-3 py-2 text-gray-600 hover:text-gray-900">How it Works</a>
               <a href="#testimonials" className="block px-3 py-2 text-gray-600 hover:text-gray-900">Reviews</a>
@@ -664,6 +679,9 @@ function App() {
           </div>
         </div>
       </section>
+
+      {/* Story Builder Screen */}
+      {showStoryBuilder && <StoryGenerator onClose={closeStoryBuilder} />}
 
       {/* Final CTA */}
       <section className="py-20 bg-gradient-to-r from-blue-600 to-purple-600">
