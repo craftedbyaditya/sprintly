@@ -20,6 +20,7 @@ import StoryGenerator from './app/StoryGenerator';
 import Dashboard from './app/Dashboard';
 import Feedback from './app/Feedback';
 import TestCases from './app/TestCases';
+import Pricing from './app/Pricing';
 
 function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -28,6 +29,7 @@ function App() {
   const [showDashboard, setShowDashboard] = useState(false);
   const [showFeedback, setShowFeedback] = useState(false);
   const [showTestCases, setShowTestCases] = useState(false);
+  const [showPricing, setShowPricing] = useState(false);
   const [demoStep, setDemoStep] = useState(0);
   const [typingComplete, setTypingComplete] = useState(false);
   const [typedText, setTypedText] = useState('');
@@ -122,6 +124,14 @@ function App() {
   const closeTestCases = () => {
     setShowTestCases(false);
   };
+  
+  const openPricing = () => {
+    setShowPricing(true);
+  };
+  
+  const closePricing = () => {
+    setShowPricing(false);
+  };
 
 
   return (
@@ -144,6 +154,12 @@ function App() {
                 <a href="#features" className="text-gray-600 hover:text-gray-900 transition-colors">Features</a>
                 <a href="#how-it-works" className="text-gray-600 hover:text-gray-900 transition-colors">How it Works</a>
                 <a href="#testimonials" className="text-gray-600 hover:text-gray-900 transition-colors">Reviews</a>
+                <button
+                  onClick={openPricing}
+                  className="text-gray-600 hover:text-gray-900 transition-colors"
+                >
+                  Pricing
+                </button>
               </div>
             </div>
 
@@ -172,6 +188,15 @@ function App() {
               <a href="#features" className="block px-3 py-2 text-gray-600 hover:text-gray-900">Features</a>
               <a href="#how-it-works" className="block px-3 py-2 text-gray-600 hover:text-gray-900">How it Works</a>
               <a href="#testimonials" className="block px-3 py-2 text-gray-600 hover:text-gray-900">Reviews</a>
+              <button
+                onClick={() => {
+                  toggleMenu(); // Close the menu
+                  openPricing(); // Open pricing page
+                }}
+                className="block px-3 py-2 text-gray-600 hover:text-gray-900 text-left w-full"
+              >
+                Pricing
+              </button>
               {/* <button className="w-full mt-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">
                 Get Early Access
               </button> */}
@@ -740,6 +765,12 @@ function App() {
         openStoryBuilder={openStoryBuilder}
         openFeedback={openFeedback}
       />}
+      
+      {/* Pricing Screen */}
+      {showPricing && <Pricing 
+        onClose={closePricing}
+        openDashboard={openDashboard}
+      />}
 
       {/* Final CTA */}
       <section className="py-20 bg-gradient-to-r from-blue-600 to-purple-600">
@@ -758,6 +789,12 @@ function App() {
             >
               <span>Generate My First Story</span>
               <ArrowRight className="w-5 h-5" />
+            </button>
+            <button 
+              onClick={openPricing}
+              className="bg-blue-100 text-blue-700 px-8 py-4 rounded-lg hover:bg-blue-200 transition-all font-medium flex items-center space-x-2"
+            >
+              <span>View Pricing</span>
             </button>
           </div>
           

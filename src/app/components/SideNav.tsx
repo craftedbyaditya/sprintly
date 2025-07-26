@@ -4,7 +4,8 @@ import {
   MessageSquare, 
   Settings,
   X,
-  TestTube
+  TestTube,
+  DollarSign
 } from 'lucide-react';
 
 interface SideNavProps {
@@ -13,7 +14,8 @@ interface SideNavProps {
   openStoryBuilder?: () => void;
   openFeedback?: () => void;
   openTestCases?: () => void;
-  activeScreen: 'dashboard' | 'storyBuilder' | 'feedback' | 'testCases';
+  openPricing?: () => void;
+  activeScreen: 'dashboard' | 'storyBuilder' | 'feedback' | 'testCases' ;
 }
 
 export default function SideNav({ 
@@ -22,6 +24,7 @@ export default function SideNav({
   openStoryBuilder, 
   openFeedback, 
   openTestCases,
+  openPricing,
   activeScreen 
 }: SideNavProps) {
   return (
@@ -101,6 +104,9 @@ export default function SideNav({
               activeScreen !== 'testCases' && 'text-gray-600'
             }`}>Test Cases</span>
           </button>
+          
+          {/* Pricing */}
+        
         </div>
       </div>
     </div>
