@@ -80,19 +80,24 @@ export default function Feedback({ onClose, openDashboard, openStoryBuilder }: F
                   <label className="block text-sm font-medium text-gray-700 mb-2">
                     Type of Feedback
                   </label>
-                  <div className="grid grid-cols-3 gap-3">
-                    {['suggestion', 'issue', 'praise'].map((type) => (
+                  <div className="max-w-md grid grid-cols-3 gap-2">
+                    {[
+                      { type: 'suggestion', emoji: '💡' },
+                      { type: 'issue', emoji: '🐛' },
+                      { type: 'praise', emoji: '🙌' }
+                    ].map(({ type, emoji }) => (
                       <button
                         key={type}
                         type="button"
-                        className={`py-2 px-4 rounded-md text-sm font-medium border ${
+                        className={`py-2 px-3 rounded-md text-sm font-medium border flex items-center justify-center ${
                           feedbackType === type
                             ? 'bg-blue-50 border-blue-300 text-blue-700'
                             : 'bg-white border-gray-300 text-gray-700 hover:bg-gray-50'
                         }`}
                         onClick={() => setFeedbackType(type)}
                       >
-                        {type.charAt(0).toUpperCase() + type.slice(1)}
+                        <span className="mr-1.5">{emoji}</span>
+                        <span>{type.charAt(0).toUpperCase() + type.slice(1)}</span>
                       </button>
                     ))}
                   </div>
@@ -107,7 +112,7 @@ export default function Feedback({ onClose, openDashboard, openStoryBuilder }: F
                     id="feedback"
                     rows={5}
                     placeholder="Please share your thoughts..."
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors text-sm shadow-sm placeholder:text-gray-400"
                     value={feedbackText}
                     onChange={(e) => setFeedbackText(e.target.value)}
                     required
@@ -124,7 +129,7 @@ export default function Feedback({ onClose, openDashboard, openStoryBuilder }: F
                       type="text"
                       id="name"
                       placeholder="Your name"
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                      className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors text-sm shadow-sm placeholder:text-gray-400"
                       value={name}
                       onChange={(e) => setName(e.target.value)}
                     />
@@ -137,7 +142,7 @@ export default function Feedback({ onClose, openDashboard, openStoryBuilder }: F
                       type="email"
                       id="email"
                       placeholder="your@email.com"
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                      className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors text-sm shadow-sm placeholder:text-gray-400"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                     />
