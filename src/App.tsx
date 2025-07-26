@@ -17,11 +17,15 @@ import {
   ArrowDown
 } from 'lucide-react';
 import StoryGenerator from './app/StoryGenerator';
+import Dashboard from './app/Dashboard';
+import Feedback from './app/Feedback';
 
 function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [showDemo, setShowDemo] = useState(false);
   const [showStoryBuilder, setShowStoryBuilder] = useState(false);
+  const [showDashboard, setShowDashboard] = useState(false);
+  const [showFeedback, setShowFeedback] = useState(false);
   const [demoStep, setDemoStep] = useState(0);
   const [typingComplete, setTypingComplete] = useState(false);
   const [typedText, setTypedText] = useState('');
@@ -78,10 +82,32 @@ function App() {
 
   const openStoryBuilder = () => {
     setShowStoryBuilder(true);
+    setShowDashboard(false);
+    setShowFeedback(false);
   };
 
   const closeStoryBuilder = () => {
     setShowStoryBuilder(false);
+  };
+  
+  const openDashboard = () => {
+    setShowDashboard(true);
+    setShowStoryBuilder(false);
+    setShowFeedback(false);
+  };
+  
+  const closeDashboard = () => {
+    setShowDashboard(false);
+  };
+  
+  const openFeedback = () => {
+    setShowFeedback(true);
+    setShowDashboard(false);
+    setShowStoryBuilder(false);
+  };
+  
+  const closeFeedback = () => {
+    setShowFeedback(false);
   };
 
 
@@ -105,13 +131,6 @@ function App() {
                 <a href="#features" className="text-gray-600 hover:text-gray-900 transition-colors">Features</a>
                 <a href="#how-it-works" className="text-gray-600 hover:text-gray-900 transition-colors">How it Works</a>
                 <a href="#testimonials" className="text-gray-600 hover:text-gray-900 transition-colors">Reviews</a>
-                <button 
-                  onClick={openStoryBuilder}
-                  className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors flex items-center gap-2"
-                >
-                  <FileText className="w-4 h-4" />
-                  Story Builder
-                </button>
               </div>
             </div>
 
@@ -681,7 +700,25 @@ function App() {
       </section>
 
       {/* Story Builder Screen */}
-      {showStoryBuilder && <StoryGenerator onClose={closeStoryBuilder} />}
+      {showStoryBuilder && <StoryGenerator 
+        onClose={closeStoryBuilder} 
+        openDashboard={openDashboard}
+        openFeedback={openFeedback}
+      />}
+      
+      {/* Dashboard Screen */}
+      {showDashboard && <Dashboard 
+        onClose={closeDashboard} 
+        openStoryBuilder={openStoryBuilder}
+        openFeedback={openFeedback}
+      />}
+      
+      {/* Feedback Screen */}
+      {showFeedback && <Feedback 
+        onClose={closeFeedback} 
+        openDashboard={openDashboard}
+        openStoryBuilder={openStoryBuilder}
+      />}
 
       {/* Final CTA */}
       <section className="py-20 bg-gradient-to-r from-blue-600 to-purple-600">
@@ -694,7 +731,10 @@ function App() {
           </p>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-            <button className="bg-white text-blue-600 px-8 py-4 rounded-lg hover:bg-gray-50 transition-all transform hover:scale-105 font-semibold flex items-center space-x-2 shadow-lg">
+            <button 
+              onClick={openStoryBuilder}
+              className="bg-white text-blue-600 px-8 py-4 rounded-lg hover:bg-gray-50 transition-all transform hover:scale-105 font-semibold flex items-center space-x-2 shadow-lg"
+            >
               <span>Generate My First Story</span>
               <ArrowRight className="w-5 h-5" />
             </button>

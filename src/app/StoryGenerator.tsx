@@ -1,26 +1,27 @@
 import { useState, useEffect, useRef } from 'react';
-import { 
+import {
+  X,
+  ChevronsUpDown,
+  Check,
+  CornerDownLeft,
   Sparkles,
   Copy,
+  Maximize2,
   CheckCircle,
   Loader2,
-  FileText,
-  Home,
-  Clock,
-  MessageSquare,
-  Square,
-  CheckSquare,
-  ChevronDown,
-  ChevronUp,
   Pencil,
-  X
+  Square,
+  CheckSquare
 } from 'lucide-react';
+import SideNav from './components/SideNav';
 
 /* Add global animation styles */
 import './animations.css';
 
 interface StoryGeneratorProps {
   onClose: () => void;
+  openDashboard?: () => void;
+  openFeedback?: () => void;
 }
 
 interface GeneratedStory {
@@ -28,7 +29,7 @@ interface GeneratedStory {
   content: string;
 }
 
-export default function StoryGenerator({ onClose }: StoryGeneratorProps) {
+export default function StoryGenerator({ onClose, openDashboard, openFeedback }: StoryGeneratorProps) {
   const [storyPrompt, setStoryPrompt] = useState('');
   const [selectedRoles, setSelectedRoles] = useState<string[]>(['Developer', 'QA']);
   const [isGenerating, setIsGenerating] = useState(false);
@@ -129,76 +130,52 @@ export default function StoryGenerator({ onClose }: StoryGeneratorProps) {
 
   return (
     <div className="fixed inset-0 bg-white z-50 flex overflow-hidden">
-      <div className="w-16 md:w-64 bg-gray-50 border-r border-gray-200 flex-shrink-0 h-screen">
-        <div className="p-4 flex flex-col h-full">
-          <div className="flex items-center justify-center md:justify-start space-x-2 mb-8 mt-2">
-            <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
-              <Sparkles className="w-4 h-4 text-white" />
-            </div>
-            <span className="text-lg font-bold text-gray-800 hidden md:block">Sprintly</span>
-          </div>
-          
-          <div className="flex-grow flex flex-col space-y-1">
-            <button className="flex items-center py-3 px-3 md:px-4 rounded-lg hover:bg-gray-100 transition-colors">
-              <Home className="w-5 h-5 text-gray-500" />
-              <span className="ml-3 text-gray-600 font-medium hidden md:block">Dashboard</span>
-            </button>
-            <button className="flex items-center py-3 px-3 md:px-4 rounded-lg bg-blue-50 text-blue-600 hover:bg-blue-100 transition-colors">
-              <FileText className="w-5 h-5" />
-              <span className="ml-3 font-medium hidden md:block">Story Builder</span>
-            </button>
-            <button className="flex items-center py-3 px-3 md:px-4 rounded-lg hover:bg-gray-100 transition-colors">
-              <Clock className="w-5 h-5 text-gray-500" />
-              <span className="ml-3 text-gray-600 font-medium hidden md:block">History</span>
-            </button>
-            <button className="flex items-center py-3 px-3 md:px-4 rounded-lg hover:bg-gray-100 transition-colors">
-              <MessageSquare className="w-5 h-5 text-gray-500" />
-              <span className="ml-3 text-gray-600 font-medium hidden md:block">Feedback</span>
-            </button>
-          </div>
-        </div>
-      </div>
+      <SideNav 
+        activeScreen="storyBuilder"
+        onClose={onClose}
+        openDashboard={openDashboard}
+        openFeedback={openFeedback}
+      />
       
+      {/* Main content area */}
       <div className="flex-grow overflow-y-auto overflow-x-hidden">
         <nav className="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-gray-100 shadow-sm">
-          <div className="w-full px-4 sm:px-6 lg:px-8">
+          <div className="w-full px-4 sm:px-5 lg:px-6">
             <div className="flex items-center h-12" />
           </div>
         </nav>
-      
-        <div className="px-4 sm:px-6 lg:px-8 py-6">
-          <div className="w-full max-w-6xl mx-auto">
-            <h1 className="text-2xl font-semibold text-gray-800 mb-2">Story Builder</h1>
+        
+        <div className="px-4 sm:px-5 lg:px-6 py-6">
+          <div className="max-w-6xl">
+            <h2 className="flex justify-between items-center text-2xl font-bold text-gray-800 mb-4">
+              <div className="flex items-center">
+                Story Generator 📝
+              </div>
+            </h2>
             <p className="text-sm text-gray-500 mb-5">
               Generate role-specific user stories using AI based on your feature idea.
             </p>
-          
-            {!isInputExpanded && generatedStories.length > 0 && (
-              <div 
-                onClick={() => setIsInputExpanded(true)}
-                className="flex flex-col mb-6 bg-white py-3 px-4 border border-gray-100 rounded-lg shadow-sm hover:bg-gray-50 cursor-pointer transition-colors"
-              >
-                <div className="flex items-center justify-between w-full">
-                  <span className="font-medium text-sm text-gray-700">Prompt</span>
-                  <div className="flex items-center text-gray-400">
-                    <Pencil className="w-3.5 h-3.5 mr-1" />
-                    <span className="text-xs">Edit</span>
-                  </div>
+            {(!isInputExpanded && generatedStories.length > 0) && (
+              <div onClick={() => setIsInputExpanded(true)} className="flex items-center bg-white shadow-sm rounded-lg border border-gray-200 p-4 cursor-pointer hover:bg-blue-50 hover:border-blue-200 transition-all duration-200 mb-4 animate-fade-in-fast">
+                <div className="flex-grow truncate pr-4">
+                  <p className="text-sm text-gray-500 mb-0.5">Feature Prompt:</p>
+                  <p className="text-sm text-gray-800 font-medium truncate">{storyPrompt}</p>
                 </div>
-                <span className="text-sm text-gray-600 mt-1">{storyPrompt}</span>
+                <div className="text-blue-500 hover:text-blue-700 p-1 rounded hover:bg-blue-100/50 transition-colors">
+                  <Pencil className="w-4 h-4" />
+                </div>
               </div>
             )}
-
             {(isInputExpanded || generatedStories.length === 0) && (
-              <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 pt-4 mb-8 transition-all duration-300">
+              <div className="mb-8">
                 <div className="transition-all duration-300">
                   <div className="mt-0 mb-6">
-                    <label htmlFor="storyPrompt" className="block text-sm font-medium text-gray-700 mb-3">
+                    <label htmlFor="storyPrompt" className="text-lg font-semibold text-gray-800 mb-4 block">
                       Story prompt <span className="text-red-500">*</span>
                     </label>
                     <textarea
                       id="storyPrompt"
-                      className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors text-sm"
+                      className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors text-sm shadow-sm placeholder:text-gray-400"
                       placeholder="What feature would you like to build..."
                       rows={4}
                       required
@@ -208,38 +185,32 @@ export default function StoryGenerator({ onClose }: StoryGeneratorProps) {
                   </div>
                 
                   <div className="mb-8">
-                    <div className="flex items-center justify-between mb-3">
-                      <label className="text-sm font-medium text-gray-700">
-                        Select roles
+                    <div className="mb-3">
+                      <label className="text-lg font-semibold text-gray-800 mb-4 block">
+                        Select Stakeholders:
                       </label>
-                      <button 
-                        onClick={toggleAllRoles}
-                        className="flex items-center text-sm text-blue-600 hover:text-blue-800 transition-colors"
-                      >
-                        {allSelected ? (
-                          <>
-                            <Square className="w-4 h-4 mr-1.5" />
-                            <span>Deselect All</span>
-                          </>
-                        ) : (
-                          <>
-                            <CheckSquare className="w-4 h-4 mr-1.5" />
-                            <span>Select All</span>
-                          </>
-                        )}
-                      </button>
                     </div>
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                      <div 
+                        key="all"
+                        onClick={toggleAllRoles}
+                        className={`flex items-center p-2 rounded-md cursor-pointer transition-all border ${allSelected ? 'bg-blue-100 border-blue-300 shadow-sm' : 'border-gray-200 hover:bg-gray-50'}`}
+                      >
+                        <div className={`w-4 h-4 flex items-center justify-center mr-2.5 ${allSelected ? 'text-blue-600' : 'text-gray-400'}`}>
+                          {allSelected ? <CheckSquare className="w-4 h-4" /> : <Square className="w-4 h-4" />}
+                        </div>
+                        <span className={`text-sm font-medium ${allSelected ? 'text-blue-800' : 'text-gray-700'}`}>All Roles</span>
+                      </div>
                       {roles.map((role) => (
                         <div 
                           key={role}
                           onClick={() => toggleRoleSelection(role)}
-                          className={`flex items-center p-2 rounded-md cursor-pointer transition-all ${selectedRoles.includes(role) ? 'bg-blue-50/50' : 'hover:bg-gray-50'}`}
+                          className={`flex items-center p-2 rounded-md cursor-pointer transition-all border ${selectedRoles.includes(role) ? 'bg-blue-50 border-blue-200' : 'border-gray-200 hover:bg-gray-50'}`}
                         >
-                          <div className={`w-4 h-4 flex items-center justify-center mr-2.5 ${selectedRoles.includes(role) ? 'text-blue-500' : 'text-gray-300'}`}>
+                          <div className={`w-4 h-4 flex items-center justify-center mr-2.5 ${selectedRoles.includes(role) ? 'text-blue-500' : 'text-gray-400'}`}>
                             {selectedRoles.includes(role) ? <CheckSquare className="w-4 h-4" /> : <Square className="w-4 h-4" />}
                           </div>
-                          <span className="text-sm font-medium text-gray-700">{role}</span>
+                          <span className={`text-sm font-medium ${selectedRoles.includes(role) ? 'text-blue-700' : 'text-gray-700'}`}>{role}</span>
                         </div>
                       ))}
                     </div>
@@ -247,34 +218,29 @@ export default function StoryGenerator({ onClose }: StoryGeneratorProps) {
                 </div>
               </div>
             )}
-
             <div className="sticky bottom-6 left-0 right-0 z-10 flex justify-end pt-4 mt-6">
-              {/* <button
-                onClick={() => {
-                  if (!isInputExpanded) {
-                    setIsInputExpanded(true);
-                  } else {
-                    generateStories();
-                  }
-                }}
-                disabled={(!isInputExpanded && generatedStories.length > 0) || (!storyPrompt.trim() || isGenerating || selectedRoles.length === 0)}
-                className={`px-8 py-3 rounded-lg font-medium transition-all transform hover:scale-[1.02] active:scale-[0.98] ${  
-                  !storyPrompt.trim() || selectedRoles.length === 0 
-                    ? 'bg-gray-200 text-gray-400 cursor-not-allowed' 
-                    : 'bg-gradient-to-r from-blue-600 to-blue-500 text-white hover:from-blue-700 hover:to-blue-600 shadow-md'
-                }`}
-              >
-                {isGenerating ? (
+            
+              {generatedStories.length === 0 && (
+                <button
+                  onClick={() => {
+                    if (!isInputExpanded) {
+                      setIsInputExpanded(true);
+                    } else {
+                      generateStories();
+                    }
+                  }}
+                  disabled={!storyPrompt.trim() || isGenerating || selectedRoles.length === 0}
+                  className={`px-8 py-3 rounded-lg font-medium transition-all transform hover:scale-[1.02] active:scale-[0.98] ${  
+                    !storyPrompt.trim() || selectedRoles.length === 0 
+                      ? 'bg-gray-200 text-gray-400 cursor-not-allowed' 
+                      : 'bg-gradient-to-r from-blue-600 to-blue-500 text-white hover:from-blue-700 hover:to-blue-600 shadow-md'
+                  }`}
+                >
                   <div className="flex items-center space-x-2">
-                    <Loader2 className="w-4 h-4 animate-spin" />
-                    <span>Generating...</span>
-                  </div>
-                ) : (
-                  <div className="flex items-center space-x-2">
-                    {!isInputExpanded && generatedStories.length > 0 ? (
+                    {isGenerating ? (
                       <>
-                        <ChevronUp className="w-4 h-4" />
-                        <span>Edit Prompt</span>
+                        <Loader2 className="w-4 h-4 animate-spin" />
+                        <span>Generating...</span>
                       </>
                     ) : (
                       <>
@@ -283,88 +249,57 @@ export default function StoryGenerator({ onClose }: StoryGeneratorProps) {
                       </>
                     )}
                   </div>
-                )}
-              </button> */}
-              {generatedStories.length === 0 && (
-  <button
-    onClick={() => {
-      if (!isInputExpanded) {
-        setIsInputExpanded(true);
-      } else {
-        generateStories();
-      }
-    }}
-    disabled={!storyPrompt.trim() || isGenerating || selectedRoles.length === 0}
-    className={`px-8 py-3 rounded-lg font-medium transition-all transform hover:scale-[1.02] active:scale-[0.98] ${  
-      !storyPrompt.trim() || selectedRoles.length === 0 
-        ? 'bg-gray-200 text-gray-400 cursor-not-allowed' 
-        : 'bg-gradient-to-r from-blue-600 to-blue-500 text-white hover:from-blue-700 hover:to-blue-600 shadow-md'
-    }`}
-  >
-    <div className="flex items-center space-x-2">
-      {isGenerating ? (
-        <>
-          <Loader2 className="w-4 h-4 animate-spin" />
-          <span>Generating...</span>
-        </>
-      ) : (
-        <>
-          <Sparkles className="w-4 h-4" />
-          <span>Generate Stories</span>
-        </>
-      )}
-    </div>
-  </button>
-)}
+                </button>
+              )}
             </div>
 
             {generatedStories.length > 0 && (
               <div 
                 ref={storiesSectionRef}
-                className={`mb-12 animate-fade-in transition-all duration-500 ${!isInputExpanded ? 'pt-8 mt-2' : ''}`}
+                className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 mb-8 animate-fade-in transition-shadow duration-200 hover:shadow-md"
               >
-                <div className="flex items-center justify-between mb-6">
-                  <h2 className="text-xl font-semibold text-gray-800">Generated User Stories</h2>
+                <div className="flex justify-between items-center mb-5">
+                  <h2 className="text-xl font-semibold text-gray-800 flex items-center">
+                    Generated User Stories
+                  </h2>
                   <div className="text-sm text-gray-500">{generatedStories.length} stories generated</div>
                 </div>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                   {generatedStories.map((story, index) => (
                     <div 
                       key={index} 
-                      className="bg-white border border-gray-100 rounded-xl shadow-sm p-5 transition-all hover:shadow-md h-full flex flex-col relative overflow-hidden"
-                      style={{
-                        animationDelay: `${index * 100}ms`,
-                        transform: 'translateY(0)',
-                      }}
+                      className="bg-white border border-gray-200 rounded-xl p-5 shadow-sm hover:shadow-md transition-shadow duration-200 flex flex-col h-full"
                     >
-                      <div className="flex justify-between items-start mb-3">
-                        <span className="inline-flex items-center px-2 py-0.5 text-xs font-medium bg-blue-100 text-blue-800 border border-blue-200">
-                          {story.role}
-                        </span>
-                        <button 
-                          onClick={() => copyToClipboard(story.content)}
-                          className="text-gray-400 hover:text-gray-600 transition-colors"
-                          aria-label="Copy to clipboard"
-                        >
-                          {copiedStory === story.content ? (
-                            <CheckCircle className="w-4 h-4 text-green-500" />
-                          ) : (
-                            <Copy className="w-4 h-4" />
-                          )}
-                        </button>
-                      </div>
-                      <div>
-                        <p className="text-gray-700 leading-relaxed overflow-hidden" style={{ display: "-webkit-box", WebkitLineClamp: 3, WebkitBoxOrient: "vertical" }}>
-                          {story.content}
-                        </p>
-                        <div className="flex justify-end mt-2">
+                      <div className="mb-3">
+                        <div className="flex justify-between items-start mb-2">
+                          <span className="inline-flex items-center px-2 py-0.5 text-xs font-medium bg-blue-100 text-blue-800 border border-blue-200 rounded">
+                            {story.role}
+                          </span>
                           <button 
-                            onClick={() => setExpandedStoryIndex(index)}
-                            className="text-xs text-blue-600 hover:text-blue-800 flex items-center gap-1"
+                            onClick={() => copyToClipboard(story.content)}
+                            className="text-gray-400 hover:text-blue-600 transition-colors p-1 rounded hover:bg-blue-50"
+                            aria-label="Copy to clipboard"
                           >
-                            <span>Read more</span>
-                            <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" /></svg>
+                            {copiedStory === story.content ? (
+                              <CheckCircle className="w-4 h-4 text-green-500" />
+                            ) : (
+                              <Copy className="w-4 h-4" />
+                            )}
                           </button>
+                        </div>
+                        <div className="flex-grow flex flex-col">
+                          <p className="text-gray-700 leading-relaxed overflow-hidden flex-grow" style={{ display: "-webkit-box", WebkitLineClamp: 3, WebkitBoxOrient: "vertical" }}>
+                            {story.content}
+                          </p>
+                          <div className="flex justify-end mt-3">
+                            <button 
+                              onClick={() => setExpandedStoryIndex(index)}
+                              className="text-xs text-blue-600 hover:text-blue-800 flex items-center gap-1 px-2 py-1 hover:bg-blue-50 rounded transition-colors"
+                            >
+                              <span>Read more</span>
+                              <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" /></svg>
+                            </button>
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -375,11 +310,11 @@ export default function StoryGenerator({ onClose }: StoryGeneratorProps) {
             
             {/* Modal for expanded story */}
             {expandedStoryIndex !== null && generatedStories[expandedStoryIndex] && (
-              <div onClick={() => setExpandedStoryIndex(null)} className="fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center z-50 p-4 animate-fade-in">
-                <div onClick={(e) => e.stopPropagation()} className="bg-white rounded-xl shadow-xl max-w-3xl w-full max-h-[90vh] overflow-hidden flex flex-col animate-slide-up">
-                  <div className="flex items-center justify-between p-5 border-b border-gray-100">
+              <div onClick={() => setExpandedStoryIndex(null)} className="fixed inset-0 bg-gray-900 bg-opacity-80 backdrop-blur-sm flex items-center justify-center z-50 p-4 animate-fade-in">
+                <div onClick={(e) => e.stopPropagation()} className="bg-white rounded-xl shadow-xl max-w-3xl w-full max-h-[90vh] overflow-hidden flex flex-col animate-slide-up border border-gray-100">
+                  <div className="flex items-center justify-between p-5 border-b border-gray-200 bg-gray-50">
                     <div className="flex items-center">
-                      <span className="inline-flex items-center px-2 py-0.5 text-sm font-medium bg-blue-100 text-blue-800 border border-blue-200 mr-3">
+                      <span className="inline-flex items-center px-3 py-1 text-sm font-medium bg-blue-100 text-blue-800 border border-blue-200 mr-3 rounded">
                         {generatedStories[expandedStoryIndex].role}
                       </span>
                     </div>
@@ -394,16 +329,16 @@ export default function StoryGenerator({ onClose }: StoryGeneratorProps) {
                     </button>
                   </div>
                   
-                  <div className="p-5 flex-grow overflow-auto">
+                  <div className="p-6 flex-grow overflow-auto">
                     <p className="text-gray-700 leading-relaxed text-md">
                       {generatedStories[expandedStoryIndex].content}
                     </p>
                   </div>
                   
-                  <div className="border-t border-gray-100 p-4 flex justify-end">
+                  <div className="border-t border-gray-200 p-4 flex justify-end bg-gray-50">
                     <button
                       onClick={() => copyToClipboard(generatedStories[expandedStoryIndex].content)}
-                      className="flex items-center px-4 py-2 rounded bg-gray-100 hover:bg-gray-200 text-gray-700 text-sm font-medium transition-colors"
+                      className="flex items-center px-4 py-2 rounded-md bg-blue-50 hover:bg-blue-100 text-blue-700 text-sm font-medium transition-colors border border-blue-100"
                     >
                       {copiedStory === generatedStories[expandedStoryIndex].content ? (
                         <>
