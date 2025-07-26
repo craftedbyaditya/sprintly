@@ -11,17 +11,25 @@ import {
   Sparkles,
   Target,
   Clock,
-  Play,
   FileText,
   Settings,
   BarChart3,
   ArrowDown
 } from 'lucide-react';
+import StoryGenerator from './app/StoryGenerator';
+import Dashboard from './app/Dashboard';
+import Feedback from './app/Feedback';
+import TestCases from './app/TestCases';
+import Pricing from './app/Pricing';
 
 function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [showDemo, setShowDemo] = useState(false);
   const [showStoryBuilder, setShowStoryBuilder] = useState(false);
+  const [showDashboard, setShowDashboard] = useState(false);
+  const [showFeedback, setShowFeedback] = useState(false);
+  const [showTestCases, setShowTestCases] = useState(false);
+  const [showPricing, setShowPricing] = useState(false);
   const [demoStep, setDemoStep] = useState(0);
   const [typingComplete, setTypingComplete] = useState(false);
   const [typedText, setTypedText] = useState('');
@@ -78,11 +86,53 @@ function App() {
 
   const openStoryBuilder = () => {
     setShowStoryBuilder(true);
+    setShowDashboard(false);
+    setShowFeedback(false);
   };
 
   const closeStoryBuilder = () => {
     setShowStoryBuilder(false);
   };
+  
+  const openDashboard = () => {
+    setShowDashboard(true);
+    setShowStoryBuilder(false);
+    setShowFeedback(false);
+  };
+  
+  const closeDashboard = () => {
+    setShowDashboard(false);
+  };
+  
+  const openFeedback = () => {
+    setShowFeedback(true);
+    setShowDashboard(false);
+    setShowStoryBuilder(false);
+  };
+  
+  const closeFeedback = () => {
+    setShowFeedback(false);
+  };
+  
+  const openTestCases = () => {
+    setShowTestCases(true);
+    setShowDashboard(false);
+    setShowStoryBuilder(false);
+    setShowFeedback(false);
+  };
+  
+  const closeTestCases = () => {
+    setShowTestCases(false);
+  };
+  
+  const openPricing = () => {
+    setShowPricing(true);
+  };
+  
+  const closePricing = () => {
+    setShowPricing(false);
+  };
+
 
   return (
     <div className="min-h-screen bg-white">
@@ -92,8 +142,8 @@ function App() {
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center">
               <div className="flex items-center space-x-2">
-                <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
-                  <Sparkles className="w-5 h-5 text-white" />
+                <div className="w-7 h-7 bg-gradient-to-r from-blue-600 to-blue-500 rounded flex items-center justify-center text-white font-bold">
+                  S
                 </div>
                 <span className="text-xl font-bold text-gray-900">Sprintly</span>
               </div>
@@ -104,9 +154,12 @@ function App() {
                 <a href="#features" className="text-gray-600 hover:text-gray-900 transition-colors">Features</a>
                 <a href="#how-it-works" className="text-gray-600 hover:text-gray-900 transition-colors">How it Works</a>
                 <a href="#testimonials" className="text-gray-600 hover:text-gray-900 transition-colors">Reviews</a>
-                {/* <button className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">
-                  Get Early Access
-                </button> */}
+                <button 
+                  onClick={() => window.location.href = import.meta.env.BASE_URL || '/'}
+                  className="flex items-center focus:outline-none hover:opacity-90 transition-opacity"
+                >
+                  Pricing
+                </button>
               </div>
             </div>
 
@@ -122,9 +175,28 @@ function App() {
         {isMenuOpen && (
           <div className="md:hidden bg-white border-t border-gray-200">
             <div className="px-4 pt-2 pb-3 space-y-1">
+              <button 
+                onClick={() => {
+                  toggleMenu(); // Close the menu
+                  openStoryBuilder(); // Open story builder
+                }}
+                className="w-full text-left block px-3 py-2 text-base font-medium text-blue-600 bg-blue-50 rounded-md flex items-center space-x-2"
+              >
+                <FileText className="w-5 h-5" />
+                <span>Story Builder</span>
+              </button>
               <a href="#features" className="block px-3 py-2 text-gray-600 hover:text-gray-900">Features</a>
               <a href="#how-it-works" className="block px-3 py-2 text-gray-600 hover:text-gray-900">How it Works</a>
               <a href="#testimonials" className="block px-3 py-2 text-gray-600 hover:text-gray-900">Reviews</a>
+              <button
+                onClick={() => {
+                  toggleMenu(); // Close the menu
+                  openPricing(); // Open pricing page
+                }}
+                className="block px-3 py-2 text-gray-600 hover:text-gray-900 text-left w-full"
+              >
+                Pricing
+              </button>
               {/* <button className="w-full mt-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">
                 Get Early Access
               </button> */}
@@ -665,6 +737,41 @@ function App() {
         </div>
       </section>
 
+      {/* Story Builder Screen */}
+      {showStoryBuilder && <StoryGenerator 
+        onClose={closeStoryBuilder} 
+        openDashboard={openDashboard}
+        openFeedback={openFeedback}
+      />}
+      
+      {/* Dashboard Screen */}
+      {showDashboard && <Dashboard 
+        onClose={closeDashboard} 
+        openStoryBuilder={openStoryBuilder}
+        openFeedback={openFeedback}
+      />}
+      
+      {/* Feedback Screen */}
+      {showFeedback && <Feedback 
+        onClose={closeFeedback} 
+        openDashboard={openDashboard}
+        openStoryBuilder={openStoryBuilder}
+      />}
+      
+      {/* Test Cases Screen */}
+      {showTestCases && <TestCases 
+        onClose={closeTestCases}
+        openDashboard={openDashboard}
+        openStoryBuilder={openStoryBuilder}
+        openFeedback={openFeedback}
+      />}
+      
+      {/* Pricing Screen */}
+      {showPricing && <Pricing 
+        onClose={closePricing}
+        openDashboard={openDashboard}
+      />}
+
       {/* Final CTA */}
       <section className="py-20 bg-gradient-to-r from-blue-600 to-purple-600">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
@@ -676,9 +783,18 @@ function App() {
           </p>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-            <button className="bg-white text-blue-600 px-8 py-4 rounded-lg hover:bg-gray-50 transition-all transform hover:scale-105 font-semibold flex items-center space-x-2 shadow-lg">
+            <button 
+              onClick={openStoryBuilder}
+              className="bg-white text-blue-600 px-8 py-4 rounded-lg hover:bg-gray-50 transition-all transform hover:scale-105 font-semibold flex items-center space-x-2 shadow-lg"
+            >
               <span>Generate My First Story</span>
               <ArrowRight className="w-5 h-5" />
+            </button>
+            <button 
+              onClick={openPricing}
+              className="bg-blue-100 text-blue-700 px-8 py-4 rounded-lg hover:bg-blue-200 transition-all font-medium flex items-center space-x-2"
+            >
+              <span>View Pricing</span>
             </button>
           </div>
           
@@ -694,8 +810,8 @@ function App() {
           <div className="grid md:grid-cols-4 gap-8">
             <div className="md:col-span-2">
               <div className="flex items-center space-x-2 mb-4">
-                <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
-                  <Sparkles className="w-5 h-5 text-white" />
+                <div className="w-7 h-7 bg-gradient-to-r from-blue-600 to-blue-500 rounded flex items-center justify-center text-white font-bold">
+                  S
                 </div>
                 <span className="text-xl font-bold">Sprintly</span>
               </div>
