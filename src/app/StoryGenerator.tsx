@@ -10,9 +10,14 @@ import {
   MessageSquare,
   Square,
   CheckSquare,
+  ChevronDown,
   ChevronUp,
-  Pencil
+  Pencil,
+  X
 } from 'lucide-react';
+
+/* Add global animation styles */
+import './animations.css';
 
 interface StoryGeneratorProps {
   onClose: () => void;
@@ -31,6 +36,7 @@ export default function StoryGenerator({ onClose }: StoryGeneratorProps) {
   const [copiedStory, setCopiedStory] = useState('');
   const [allSelected, setAllSelected] = useState(false);
   const [isInputExpanded, setIsInputExpanded] = useState(true);
+  const [expandedStoryIndex, setExpandedStoryIndex] = useState<number | null>(null);
   
   const storiesSectionRef = useRef<HTMLDivElement>(null);
 
@@ -347,9 +353,71 @@ export default function StoryGenerator({ onClose }: StoryGeneratorProps) {
                           )}
                         </button>
                       </div>
-                      <p className="text-gray-700 leading-relaxed flex-grow">{story.content}</p>
+                      <div>
+                        <p className="text-gray-700 leading-relaxed overflow-hidden" style={{ display: "-webkit-box", WebkitLineClamp: 3, WebkitBoxOrient: "vertical" }}>
+                          {story.content}
+                        </p>
+                        <div className="flex justify-end mt-2">
+                          <button 
+                            onClick={() => setExpandedStoryIndex(index)}
+                            className="text-xs text-blue-600 hover:text-blue-800 flex items-center gap-1"
+                          >
+                            <span>Read more</span>
+                            <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" /></svg>
+                          </button>
+                        </div>
+                      </div>
                     </div>
                   ))}
+                </div>
+              </div>
+            )}
+            
+            {/* Modal for expanded story */}
+            {expandedStoryIndex !== null && generatedStories[expandedStoryIndex] && (
+              <div onClick={() => setExpandedStoryIndex(null)} className="fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center z-50 p-4 animate-fade-in">
+                <div onClick={(e) => e.stopPropagation()} className="bg-white rounded-xl shadow-xl max-w-3xl w-full max-h-[90vh] overflow-hidden flex flex-col animate-slide-up">
+                  <div className="flex items-center justify-between p-5 border-b border-gray-100">
+                    <div className="flex items-center">
+                      <span className="inline-flex items-center px-2 py-0.5 text-sm font-medium bg-blue-100 text-blue-800 border border-blue-200 mr-3">
+                        {generatedStories[expandedStoryIndex].role}
+                      </span>
+                    </div>
+                    <button 
+                      onClick={() => setExpandedStoryIndex(null)}
+                      className="text-gray-400 hover:text-gray-600 transition-colors"
+                      aria-label="Close modal"
+                    >
+                      <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                      </svg>
+                    </button>
+                  </div>
+                  
+                  <div className="p-5 flex-grow overflow-auto">
+                    <p className="text-gray-700 leading-relaxed text-md">
+                      {generatedStories[expandedStoryIndex].content}
+                    </p>
+                  </div>
+                  
+                  <div className="border-t border-gray-100 p-4 flex justify-end">
+                    <button
+                      onClick={() => copyToClipboard(generatedStories[expandedStoryIndex].content)}
+                      className="flex items-center px-4 py-2 rounded bg-gray-100 hover:bg-gray-200 text-gray-700 text-sm font-medium transition-colors"
+                    >
+                      {copiedStory === generatedStories[expandedStoryIndex].content ? (
+                        <>
+                          <CheckCircle className="w-4 h-4 mr-2 text-green-500" />
+                          <span>Copied</span>
+                        </>
+                      ) : (
+                        <>
+                          <Copy className="w-4 h-4 mr-2" />
+                          <span>Copy to clipboard</span>
+                        </>
+                      )}
+                    </button>
+                  </div>
                 </div>
               </div>
             )}
