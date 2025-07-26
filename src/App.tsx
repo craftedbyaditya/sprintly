@@ -19,6 +19,7 @@ import {
 import StoryGenerator from './app/StoryGenerator';
 import Dashboard from './app/Dashboard';
 import Feedback from './app/Feedback';
+import TestCases from './app/TestCases';
 
 function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -26,6 +27,7 @@ function App() {
   const [showStoryBuilder, setShowStoryBuilder] = useState(false);
   const [showDashboard, setShowDashboard] = useState(false);
   const [showFeedback, setShowFeedback] = useState(false);
+  const [showTestCases, setShowTestCases] = useState(false);
   const [demoStep, setDemoStep] = useState(0);
   const [typingComplete, setTypingComplete] = useState(false);
   const [typedText, setTypedText] = useState('');
@@ -108,6 +110,17 @@ function App() {
   
   const closeFeedback = () => {
     setShowFeedback(false);
+  };
+  
+  const openTestCases = () => {
+    setShowTestCases(true);
+    setShowDashboard(false);
+    setShowStoryBuilder(false);
+    setShowFeedback(false);
+  };
+  
+  const closeTestCases = () => {
+    setShowTestCases(false);
   };
 
 
@@ -718,6 +731,14 @@ function App() {
         onClose={closeFeedback} 
         openDashboard={openDashboard}
         openStoryBuilder={openStoryBuilder}
+      />}
+      
+      {/* Test Cases Screen */}
+      {showTestCases && <TestCases 
+        onClose={closeTestCases}
+        openDashboard={openDashboard}
+        openStoryBuilder={openStoryBuilder}
+        openFeedback={openFeedback}
       />}
 
       {/* Final CTA */}
