@@ -12,7 +12,7 @@ import SideNav from './components/SideNav';
 
 /* Add global animation styles */
 import './animations.css';
-
+import { useScreenSize } from './hooks/useScreenSize';
 interface StoryGeneratorProps {
   onClose: () => void;
   openDashboard?: () => void;
@@ -33,6 +33,7 @@ export default function StoryGenerator({ onClose, openDashboard, openFeedback }:
   const [allSelected, setAllSelected] = useState(false);
   const [isInputExpanded, setIsInputExpanded] = useState(true);
   const [expandedStoryIndex, setExpandedStoryIndex] = useState<number | null>(null);
+  const isScreenTooSmall = useScreenSize();
   
   const storiesSectionRef = useRef<HTMLDivElement>(null);
 
@@ -124,7 +125,20 @@ export default function StoryGenerator({ onClose, openDashboard, openFeedback }:
   };
 
   return (
-    <div className="fixed inset-0 bg-white z-50 flex overflow-hidden">
+    <>
+      {isScreenTooSmall ? (
+        <div className="fixed inset-0 z-50 bg-white flex items-center justify-center px-4">
+          <div className="max-w-md text-center border border-gray-200 rounded-xl shadow-md p-6 bg-white">
+            <h1 className="text-xl font-semibold text-gray-800 mb-2">Screen Too Small 📱</h1>
+            <p className="text-gray-600 text-sm">
+              This tool currently supports usage only on larger devices like tablets or laptops.
+              Please use a bigger screen to continue.
+            </p>
+          </div>
+        </div>
+      ) : (
+        // Your full original UI here
+        <div className="fixed inset-0 bg-white z-50 flex overflow-hidden">
       <SideNav 
         activeScreen="storyBuilder"
         onClose={onClose}
@@ -356,5 +370,7 @@ export default function StoryGenerator({ onClose, openDashboard, openFeedback }:
         </div>
       </div>
     </div>
+      )}
+    </>
   );
 }
